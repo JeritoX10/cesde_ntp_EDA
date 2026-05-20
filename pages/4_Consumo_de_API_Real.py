@@ -192,7 +192,7 @@ if not df_usuario.empty:
         
         # Métricas de la selección actual
         m1, m2, m3 = st.columns(3)
-        m1.metric("👥 Usuarios en Selección", len(filtered_df))
+        
         m2.metric("🏢 Total en Base de Datos", len(df_usuario))
         m3.metric("🏷️ Roles Distintos", filtered_df['rol'].nunique() if not filtered_df.empty else 0)
 
