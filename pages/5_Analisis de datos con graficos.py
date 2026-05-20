@@ -64,8 +64,8 @@ if df is not None:
     if selected_numeric:
         st.subheader("Tendencias en columnas numéricas")
         fig = px.line(df.head(rows_to_plot), y=selected_numeric, markers=True)
-        fig.update_layout(height=400, legend_title_text='Columnas')
-        st.plotly_chart(fig, use_container_width=True)
+        fig.update_layout(height=400, legend_title_text='Columnas', title="Tendencia de Columnas Numéricas")
+        st.plotly_chart(fig, use_container_width=True, key="numeric_trend_chart")
     else:
         st.info("Selecciona al menos una columna numérica para ver tendencias en los datos.")
 
@@ -75,8 +75,8 @@ if df is not None:
             counts = df[col].value_counts().head(10).reset_index()
             counts.columns = [col, 'frecuencia']
             fig = px.bar(counts, x=col, y='frecuencia', title=f"Top 10 de {col}")
-            fig.update_layout(xaxis_title=col, yaxis_title='Frecuencia', height=400)
-            st.plotly_chart(fig, use_container_width=True)
+            fig.update_layout(xaxis_title=col, yaxis_title='Frecuencia', height=400, title=f"Top 10 de {col}")
+            st.plotly_chart(fig, use_container_width=True, key=f"cat_freq_chart_{col}")
     else:
         st.info("Selecciona al menos una columna categórica para ver distribuciones.")
 
@@ -93,8 +93,8 @@ if df is not None:
         dtype_counts = df.dtypes.astype(str).value_counts().reset_index()
         dtype_counts.columns = ['Tipo', 'Cantidad']
         dtype_fig = px.bar(dtype_counts, x='Tipo', y='Cantidad', title='Tipos de datos en el dataset')
-        dtype_fig.update_layout(height=400, xaxis_title='Tipo de dato', yaxis_title='Cantidad')
-        st.plotly_chart(dtype_fig, use_container_width=True)
+        dtype_fig.update_layout(height=400, xaxis_title='Tipo de dato', yaxis_title='Cantidad', title="Distribución de Tipos de Datos")
+        st.plotly_chart(dtype_fig, use_container_width=True, key="dtype_distribution_chart")
 
     with st.expander("💡 ¿Cómo interpretar la estructura?", expanded=False):
         st.write("""
@@ -110,8 +110,8 @@ if df is not None:
     if not missing.empty:
         st.subheader("Columnas con valores faltantes")
         missing_fig = px.bar(missing.reset_index(), x='index', y=missing.name, title='Valores faltantes por columna')
-        missing_fig.update_layout(height=400, xaxis_title='Columna', yaxis_title='Cantidad de nulos')
-        st.plotly_chart(missing_fig, use_container_width=True)
+        missing_fig.update_layout(height=400, xaxis_title='Columna', yaxis_title='Cantidad de nulos', title="Valores Faltantes por Columna")
+        st.plotly_chart(missing_fig, use_container_width=True, key="missing_values_chart")
         st.markdown("💡 *Pregunta: ¿Por qué crees que faltan datos en esas columnas específicas?*")
     else:
         st.success("este dataset está completo,No faltan datos.")
@@ -130,14 +130,14 @@ if df is not None:
         st.subheader("Análisis cuantitativo")
         stats = df[selected_numeric].describe().transpose()[['mean', '50%', 'std', 'min', 'max']]
         st.markdown("**Resumen estadístico de las columnas numéricas seleccionadas**")
-        stats_fig = px.bar(stats.reset_index(), x='index', y=['mean', 'std'], barmode='group', title='Media y desviación estándar')
-        stats_fig.update_layout(xaxis_title='Columna', yaxis_title='Valor', height=450)
-        st.plotly_chart(stats_fig, use_container_width=True)
+        stats_fig = px.bar(stats.reset_index(), x='index', y=['mean', 'std'], barmode='group', title='Media y Desviación Estándar')
+        stats_fig.update_layout(xaxis_title='Columna', yaxis_title='Valor', height=450, title="Media y Desviación Estándar de Columnas Numéricas")
+        st.plotly_chart(stats_fig, use_container_width=True, key="quantitative_stats_chart")
 
         st.markdown(f"**Tendencia de los primeros {rows_to_plot} registros**")
         trend_fig = px.line(df.head(rows_to_plot), y=selected_numeric, markers=True)
-        trend_fig.update_layout(height=450, legend_title_text='Columnas')
-        st.plotly_chart(trend_fig, use_container_width=True)
+        trend_fig.update_layout(height=450, legend_title_text='Columnas', title=f"Tendencia de los Primeros {rows_to_plot} Registros")
+        st.plotly_chart(trend_fig, use_container_width=True, key="quantitative_trend_chart")
     else:
         st.info("Selecciona columnas numéricas para ver los gráficos cuantitativos.")
 
@@ -147,9 +147,9 @@ if df is not None:
             st.markdown(f"**Distribución de '{col}'**")
             counts = df[col].value_counts().head(10).reset_index()
             counts.columns = [col, 'frecuencia']
-            fig = px.bar(counts, x=col, y='frecuencia', title=f"Top 10 de {col}")
-            fig.update_layout(height=400, xaxis_title=col, yaxis_title='Frecuencia')
-            st.plotly_chart(fig, use_container_width=True)
+            fig = px.bar(counts, x=col, y='frecuencia', title=f"Distribución de '{col}' (Top 10)")
+            fig.update_layout(height=400, xaxis_title=col, yaxis_title='Frecuencia', title=f"Distribución de '{col}' (Top 10)")
+            st.plotly_chart(fig, use_container_width=True, key=f"qualitative_dist_chart_{col}")
     else:
         st.info("Selecciona columnas categóricas para ver los gráficos cualitativos.")
 
@@ -164,4 +164,3 @@ if df is not None:
     """)
 else:
     st.warning("sube un archivo CSV para hacer el analisis como tal ")
-

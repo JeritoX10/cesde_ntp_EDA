@@ -21,7 +21,7 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # --- Título Principal ---
-st.title("🚀 Proyecto Integrador: Analítica de Datos")
+st.title("🚀 Proyecto Integrador: Analítica de Datos en Knowly")
 st.subheader("Transformando Información en Decisiones Estratégicas")
 
 st.divider()
@@ -68,11 +68,12 @@ st.header("👥 Equipo de Trabajo (Integrantes)")
 
 # Puedes ajustar los nombres aquí
 integrantes = [
-    {"nombre": "Integrante 1", "rol": "Analista de Datos", "emoji": "👨‍💻"},
-    {"nombre": "Integrante 2", "rol": "Ingeniero de Datos", "emoji": "👩‍🔬"},
-    {"nombre": "Integrante 3", "rol": "Arquitecto de Soluciones", "emoji": "👨‍💼"},
+    {"nombre": "Sharon Asprilla", "rol": "Analista de Datos", "emoji": "👩‍🔬"},
+    {"nombre": "Sebastian Herrera", "rol": "Ingeniero de Datos", "emoji": "👨‍💼"},
+    {"nombre": "Jeronimo Taborda", "rol": "Arquitecto de Soluciones", "emoji": "👨‍💼"},
+    {"nombre": "Juan jose Castrillon", "rol": "Arquitecto de Soluciones", "emoji": "👨‍💼"},
+    {"nombre": "Johan Cadavid", "rol": "Planteamiento logico de Soluciones", "emoji": "👨‍💼"}
 ]
-
 cols = st.columns(len(integrantes))
 
 for i, persona in enumerate(integrantes):
