@@ -187,3 +187,38 @@ if df is not None:
     """)
 else:
     st.warning("sube un archivo CSV para hacer el analisis como tal ")
+
+
+st.title("Estudiantes por Programa Académico")
+
+df = pd.read_csv("Estudiantes_programas_academicos_y_Extension_20260319.csv")
+
+# Contar estudiantes por programa
+programas = (
+    df["PROGRAMA"]
+    .value_counts()
+    .reset_index()
+)
+
+programas.columns = ["Programa Académico", "Cantidad de Estudiantes"]
+
+# Mostrar tabla
+st.subheader("Cantidad de estudiantes por programa")
+st.dataframe(programas)
+
+# Gráfico de barras
+fig = px.bar(
+    programas.head(15),
+    x="Cantidad de Estudiantes",
+    y="Programa Académico",
+    orientation="h",
+    title="Top 15 programas con más estudiantes",
+    text="Cantidad de Estudiantes"
+)
+
+fig.update_layout(
+    yaxis=dict(autorange="reversed"),
+    height=600
+)
+
+st.plotly_chart(fig, use_container_width=True)
