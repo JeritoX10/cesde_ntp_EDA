@@ -193,8 +193,6 @@ else:
 
 st.title("Estudiantes por Programa Académico")
 
-df = pd.read_csv("Estudiantes_programas_academicos_y_Extension_20260319.csv")
-
 programas = (
     df["PROGRAMA"]
     .value_counts()
@@ -275,9 +273,6 @@ st.write(df.columns.tolist())
 
 st.title("Distribución por Sexo Biológico")
 
-df = pd.read_csv("Estudiantes_programas_academicos_y_Extension_20260319.csv")
-
-
 sexo = (
     df["SEXO BIOLOGICO"]
     .value_counts()
@@ -297,5 +292,130 @@ fig.update_traces(
     textposition='inside',
     textinfo='percent+label'
 )
+
+st.plotly_chart(fig, use_container_width=True)
+
+# -------- ------------
+
+st.title("Tasa de aprobación por programa académico")
+
+df["PROGRAMA"] = df["PROGRAMA"].astype(str).str.strip()
+
+df = df[df["NUMERO MATERIAS INSCRITAS"] > 0]
+
+df["TASA APROBACION"] = (
+    df["NUMERO MATERIAS APROBADAS"] / df["NUMERO MATERIAS INSCRITAS"]
+) * 100
+
+tasa_programa = (
+    df.groupby("PROGRAMA")
+    .agg(
+        Tasa_Aprobacion=("TASA APROBACION", "mean"),
+        Estudiantes=("PROGRAMA", "count"),
+        Materias_Inscritas=("NUMERO MATERIAS INSCRITAS", "sum"),
+        Materias_Aprobadas=("NUMERO MATERIAS APROBADAS", "sum")
+    )
+    .reset_index()
+)
+
+tasa_programa.columns = [
+    "Programa Académico",
+    "Tasa de Aprobación",
+    "Cantidad de Estudiantes",
+    "Materias Inscritas",
+    "Materias Aprobadas"
+]
+
+st.subheader("Filtros")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    orden = st.selectbox(
+        "Ordenar por tasa",
+        ["Mayor a menor", "Menor a mayor"]
+    )
+
+with col2:
+    top_n = st.slider(
+        "Cantidad de programas",
+        min_value=5,
+        max_value=len(tasa_programa),
+        value=15
+    )
+
+with col3:
+    rango_tasa = st.slider(
+        "Rango de tasa de aprobación",
+        min_value=0,
+        max_value=100,
+        value=(0, 100)
+    )
+
+col4, col5 = st.columns(2)
+
+with col4:
+    min_estudiantes = st.slider(
+        "Mínimo de estudiantes por programa",
+        min_value=1,
+        max_value=int(tasa_programa["Cantidad de Estudiantes"].max()),
+        value=1
+    )
+
+with col5:
+    programa_buscar = st.text_input(
+        "Buscar programa académico"
+    )
+
+tasa_filtrada = tasa_programa[
+    (tasa_programa["Tasa de Aprobación"] >= rango_tasa[0]) &
+    (tasa_programa["Tasa de Aprobación"] <= rango_tasa[1]) &
+    (tasa_programa["Cantidad de Estudiantes"] >= min_estudiantes)
+]
+
+if programa_buscar:
+    tasa_filtrada = tasa_filtrada[
+        tasa_filtrada["Programa Académico"]
+        .str.contains(programa_buscar, case=False, na=False)
+    ]
+
+ascending = orden == "Menor a mayor"
+
+tasa_filtrada = tasa_filtrada.sort_values(
+    by="Tasa de Aprobación",
+    ascending=ascending
+)
+
+tasa_filtrada = tasa_filtrada.head(top_n)
+
+fig = px.bar(
+    tasa_filtrada,
+    x="Tasa de Aprobación",
+    y="Programa Académico",
+    orientation="h",
+    text=tasa_filtrada["Tasa de Aprobación"].round(2),
+    title="Tasa de aprobación promedio por programa académico",
+    hover_data=[
+        "Cantidad de Estudiantes",
+        "Materias Inscritas",
+        "Materias Aprobadas"
+    ]
+)
+
+fig.update_traces(
+    texttemplate="%{text}%",
+    textposition="outside"
+)
+
+fig.update_layout(
+    height=700,
+    xaxis_title="Tasa de aprobación (%)",
+    yaxis_title="Programa Académico"
+)
+
+if not ascending:
+    fig.update_layout(
+        yaxis=dict(autorange="reversed")
+    )
 
 st.plotly_chart(fig, use_container_width=True)
