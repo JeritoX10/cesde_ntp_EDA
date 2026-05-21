@@ -190,9 +190,7 @@ if df is not None:
 else:
     st.warning("sube un archivo CSV para hacer el analisis como tal ")
 
-
 st.title("Estudiantes por Programa Académico")
-
 programas = (
     df["PROGRAMA"]
     .value_counts()
