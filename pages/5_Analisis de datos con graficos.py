@@ -437,4 +437,4 @@ if not ascending:
     )
 
 st.plotly_chart(fig, use_container_width=True)
-    st.warning("Sube un archivo CSV para comenzar el análisis con gráficos.")
+st.warning("Sube un archivo CSV para comenzar el análisis con gráficos.")
