@@ -42,4 +42,13 @@ Transforma las tablas en conocimiento visual. Utiliza filtros interactivos para 
 La aplicación cuenta con una identidad visual propia basada en tonos lavanda pálidos (`#F3E5F5`), con botones y componentes personalizados mediante CSS inyectado para ofrecer una experiencia de usuario moderna y profesional.
 
 ---
-*Desarrollado como parte del Proyecto Integrador de Analítica de Datos - 2026*
+URL DE LA API DEL BACK
+https://knowly-back-10.onrender.com
+
+Integrantes del Equipo
+Nombre	Rol principal	Usuario GitHub
+[Johan Cadavid]	Líder / Backend	@[johanc178]
+[Sebastian Herrera]	Frontend Lead	@[Sebasherrera01]
+[Sharon Asprilla]	Backend / Base de datos	@[sharon-asprilla]
+[Juan Jose Castrillon]	frond/create	@[Juanjo0828]
+[Jeronimo Taborda]	backend	@[jeritoX10]
